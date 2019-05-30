@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hotdog.dao.UserDao">
+	<insert id="addUser" parameterType="com.hotdog.vo.UserVO">
+		INSERT INTO user (id, password, email, nickname, phonenumber, regdate)
+		VALUES (#{id}, PASSWORD(#{password}), #{email}, #{nickname}, #{phonenumber}, NOW())
+	</insert>
+	
+	<select id="getList" resultType="com.hotdog.vo.UserVO">
+		SELECT * FROM user
+	</select>
+	
+	<select id="getDetailInfo" resultType="com.hotdog.vo.UserVO" parameterType="String">
+		SELECT * FROM user
+		WHERE nickname = #{nickname}
+	</select>
+	
+	<select id="getUser" resultType="com.hotdog.vo.UserVO" parameterType="com.hotdog.vo.UserVO">
+		SELECT * FROM user
+		WHERE id = #{id} AND password = PASSWORD(#{password})
+	</select>
+	
+	<update id="modPw" parameterType="com.hotdog.vo.UserVO">
+		UPDATE user 
+		SET password = PASSWORD(#{password})
+		WHERE nickname = #{nickname}
+	</update>
+	
+	<select id="idCheck" resultType="int" parameterType="String">
+		SELECT COUNT(*) FROM user
+		WHERE id = #{id}
+	</select>
+	
+	<select id="nickCheck" resultType="int" parameterType="String">
+		SELECT COUNT(*) FROM user
+		WHERE nickname = #{nickname}
+	</select>
+</mapper>

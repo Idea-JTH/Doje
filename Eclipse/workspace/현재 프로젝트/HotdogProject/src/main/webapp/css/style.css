@@ -1,0 +1,354 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+@import url('https://fonts.googleapis.com/css?family=Lobster');
+@import url('https://fonts.googleapis.com/css?family=Acme');
+@import url(https://fonts.googleapis.com/css?family=Poiret+One);
+
+
+a {
+	text-decoration: none;
+	display: inline-block;
+	color: black;
+}
+
+li {
+	list-style: none;
+}
+
+#wrap {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+/*상단 메뉴 및 1등 이미지 공간*/
+header {
+	
+}
+
+
+
+.bg {
+	width: 100%;
+	height: 60px;
+	z-index: 1;
+	opacity: 0.8;
+	top: 0;
+	position: fixed;
+	object-fit: cover;
+}
+
+.bg2 {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	position: fixed;
+	left: 0;
+	top: 60px;
+	opacity: 0.5;
+	z-index: -1;
+	filter: blur(5px);
+}
+
+#menu {
+	margin-left: 40px;
+}
+
+#menu li {
+	float: left;
+}
+
+#menu li a {
+	padding: 20px 50px 20px 50px;
+	/*background: #35CE8D;*/
+	font-family: 'Acme', sans-serif;
+	transition: all 0.2s;
+}
+
+#menu li a:hover {
+	color: white;
+}
+
+#menu2 {
+	padding-top: 13px;
+	margin-right: 35px;
+}
+
+#menu2 li a {
+	font-size: 25px;
+	padding-left: 15px;
+}
+
+#menu2 li {
+	float: right;
+}
+
+#menu2 svg:hover {
+	transform: scale(1.2);
+}
+
+header h1 {
+	color: red;
+	font-family: 'Lobster', cursive;
+	font-size: 70px;
+	text-align: center;
+	margin-top: 80px;
+}
+
+
+/*1등 이미지 구역*/
+.big-box {
+	position: relative;
+	width: 100%;
+}
+
+
+.img-box {
+	width: 450px;
+	height: 450px;
+	padding: 8px;
+	border: 1px solid #ddd;
+	box-shadow: 3px 3px 3px #ddd;
+	border-radius: 4px;
+	position: absolute;
+	left: 50%;
+	margin-left: -225px;
+	top: 40px;
+}
+
+.img-box .rank {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	position: absolute;
+	top: -40px;
+	left: 50%;
+	margin-left: -50px;
+	border-radius: 100%;
+}
+
+.img-box .rank_img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+
+
+
+/*하위 이미지 영역*/
+
+section {
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom : 50px;
+}
+
+section h3 {
+	margin-top: 0;
+	text-align: center;
+	font-size: 70px;
+	margin-bottom: 25px;
+	font-family: poiret one;
+}
+
+section h2 {
+	text-align: center;
+	margin-bottom: 10px;
+	font-family: 'Acme', sans-serif;
+}
+
+.img-box2 {
+	margin-left: 10px;
+	width: 325px;
+	height: 360px;
+	padding: 8px;
+	display: inline-block;
+	border: 1px solid #ddd;
+	box-shadow: 3px 3px 3px #ddd;
+	border-radius: 4px;
+	margin-top: 10px;
+}
+
+.img-box2 img {
+	width: 325px;
+	height: 325px;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+
+
+.img-box2 .like-box {
+	height: 35px;
+	width: 100%;
+	background: #F7F2FF;
+	position: relative;
+}
+
+.img-box2 .like-box svg {
+	padding-top: 4px;
+	font-size: 25px;
+	padding-left: 150px;
+	padding-right: 150px;
+	color: #429DFF;
+	opacity: 0.9;
+	transition: all 0.5s;
+	cursor: pointer;
+}
+
+.img-box2 .like-box svg:hover {
+	color: #007BFF;
+	opacity: 1;
+}
+
+.like-box > span {
+	font-family: 'Lobster', cursive;
+	color: red;
+	font-size: 15px;
+	position: absolute;
+	right: 20px;
+	bottom: 8px;
+	opacity: 0;
+	transition: all 0.3s;
+}
+
+.like-box > span.on{
+	opacity: 1;
+}
+
+/*회원가입 영역*/
+.register-section {
+	margin-top: 25px;
+	width: 100%;
+	height: 650px;
+	position: relative;
+}
+
+.register-section img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	position: absolute;
+	filter: blur(6px);
+	z-index: 0;
+}
+
+.register-section .register-ment {
+	position: absolute;
+	font-size: 30px;
+	top: 60px;
+	font-family: poiret one;
+	font-weight: bold;
+	left: 90px;
+}
+
+.register-section .register-form {
+	width: 400px;
+	position: absolute;
+	top: 140px;
+	left: 50%;
+	margin-left: -200px;
+	border-radius: 8px;
+	padding: 30px;
+	background: rgba(100,100,100,0.2);
+}
+
+.register-section .register-form .input-name {
+	margin-left: 30px; 
+	color: white;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 18px;
+}
+
+.register-section .register-form p input {
+	height: 50px;
+	margin: 5px 30px;
+	width: 340px;
+	border-style: none;
+	border-radius: 8px;
+	margin-bottom: 25px;
+	padding-left: 10px;
+}
+
+.register-section .register-form .submit-btn {
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	height: 50px;
+	margin-top: 15px;
+	background: skyblue;
+	border-style: none;
+	border-radius: 7px;
+	transition: all 0.3s;
+	cursor: pointer;
+}
+
+.register-section .register-form .submit-btn:hover {
+	background: #47b5e2;
+	color: white;
+}
+
+.bg3 {
+	width: 100%;
+	height: 100%;	
+	object-fit: cover;
+	opacity: 1;
+}
+
+.overay {
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.overay > .popup {
+	width:50%;
+	height:50%;
+	background: rgba(15,15,15,1);
+	border-radius: 4px;
+	position: relative;
+}
+
+.overay .close-popup {
+	position: absolute;
+	top:150px; right:150px;
+	width: 100px;
+	height: 50px;
+	border-radius: 8px;
+	background: #1886f3;
+	color: white;
+	font-size: 23px;
+	line-height: 50px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.popup .popup-img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.pageNum {
+	font-size: 19px;
+	margin-left : 45%;
+}
+
+.table-box {
+	margin-top: 60px;
+}
+
+tbody > tr:hover {
+	background: #cbdff2;
+	cursor: pointer;
+}
+
+#regist_form {
+	margin-top:90px;
+}

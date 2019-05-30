@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.hotdog.dao.BoardDao">
+
+	<sql id="search">
+		<if test="keyword != null">
+			WHERE title LIKE CONCAT('%', #{keyword}, '%') 
+			OR content LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+	</sql>
+	
+	<select id="getList" resultType="com.hotdog.vo.BoardVO" parameterType="com.hotdog.vo.BoardVO">
+		SELECT * FROM ${table}
+		ORDER BY id DESC
+	</select>
+	
+	<select id="getDetail" resultType="com.hotdog.vo.BoardVO" parameterType="com.hotdog.vo.BoardVO">
+		SELECT * FROM ${table}
+		WHERE id = #{id}
+	</select>
+
+	<insert id="write" parameterType="com.hotdog.vo.BoardVO">
+		INSERT INTO ${table} (writer, title, content, writedate)
+		VALUES(#{writer}, #{title}, #{content}, NOW())
+	</insert>
+	
+	<select id="getCriteriaList" resultType="com.hotdog.vo.BoardVO">
+		SELECT * FROM ${table}
+		<include refid="search"></include>
+		ORDER BY id DESC LIMIT #{pageStart}, #{perPagerNum}
+	</select>
+	
+	<select id="getCriteriaCnt" resultType="Integer">
+		SELECT count(*) FROM ${table}
+		<include refid="search"></include>
+	</select>
+	
+	<delete id="delete" parameterType="com.hotdog.vo.BoardVO">
+		DELETE FROM ${table}
+		WHERE id = #{id}
+	</delete>
+	
+	<update id="update" parameterType="com.hotdog.vo.BoardVO">
+		UPDATE ${table} SET 
+		title = #{title},
+		content = #{content}
+		WHERE id = #{id}
+	</update>
+</mapper>
