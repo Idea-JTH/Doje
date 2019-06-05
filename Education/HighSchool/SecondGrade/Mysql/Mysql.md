@@ -48,11 +48,102 @@
 5. 디스크스토리지 or 메모리
 6. SQL 결과 반환
 
+----
 
+### 쿼리 성능 진단
+
+* 쿼리 실행 계획 : [링크1](<https://multifrontgarden.tistory.com/149>), [링크2](<https://multifrontgarden.tistory.com/151?category=471242>)
+
+  * 쿼리 앞에 EXPLAIN 키워드를 붙이면 실행 계획을 확인 할 수 있다.
+
+  * ~~~mysql
+    EXPLAIN SELECT * FROM test;
+    ~~~
+
+    * 결과(예제 테이블을 조회한 예시임 무조건 이렇게 나오지 않음!)
+
+      | <center>id</center> | <center>select_type</center> | <center>table</center> | <center>type</center> | <center>possible_keys</center> | <center>key</center> | <center>key_len</center> | <center>ref</center> | <center>rows</center> | <center>Extra</center> |
+      | :-----------------: | :--------------------------: | :--------------------: | :-------------------: | :----------------------------: | :------------------: | :----------------------: | :------------------: | :-------------------: | :--------------------: |
+      |        **1**        |   <center>SIMPLE </center>   |          test          |          ALL          |              NULL              |         NULL         |           NULL           |         NULL         |         행 수         |                        |
+
+  * 실행 계획은 일반 조회 쿼리 처럼 테이블 형태로 출력된다.<br> 
+
+* WHERE 조건 이해
+
+  * 묵시적 형변환
+
+    * 정의 : 조건절의 데이터 타입이 다를 때 우선순위가 높은 타입으로 자동 형변환 되는 것
+
+    * 문자열과 정수값을 비교하면, 우선순위가 낮은 문자열은 자동으로 정수 타입으로 형변환된다.
+
+      ~~~mysql
+      create table test(
+      inti int unsigned not null auto_increment,
+      intj int unsigned not null,
+      str varchar(64) not null,
+      d datetime not null,
+      primary key(inti)
+      );
+      
+      alter table test add key(intj), add key(str), add key(d);
+      
+      insert into test(intj, str, d)
+      values(
+      	crc32(rand()),
+          crc32(rand()*12345),
+          date_add(now(), interval -crc32(rand())/5 second)
+      );
+      
+      INSERT INTO test(intj, str,d)
+      SELECT
+      	crc32(rand()),
+          crc32(rand())*12345,
+          date_add(now(), interval -crc32(rand())/5 second)
+      FROM test;
+      ~~~
+
+    * 위 코드를 17번 실행하면 약 1만건 row가 insert됨
+
+    * 위 쿼리문 이해하기
+
+      * test테이블 생성
+      * crc32를 이용한 8자리 수를 값으로 삽입  [crc32란?](<https://12bme.tistory.com/395>)
+      * insert into select 구문을 이용하여 테이블의 값을 계속 복사해나감. (1 -> 2 -> 4 -> 8 ...)
+
+    * 실행계획에서 intj를 문자열과 정수형으로 검색한 경우
+
+      ![error](https://user-images.githubusercontent.com/39946822/58929998-a682a480-8794-11e9-9ced-e742bedf60c8.png)
+
+      * 모두 동일하게 인덱스를 타며 검색하는 것을 알 수가있다.
+
+    * 실행계획에서 str을 문자열로 검색한 경우
+
+      ![error](https://user-images.githubusercontent.com/39946822/58930105-11cc7680-8795-11e9-842c-052b210db78b.png)
+
+      * 인덱스를 타며 빠르게 검색한다.
+
+    * 실행계획에서 str을 정수형으로 검색한 경우
+
+      ![error](https://user-images.githubusercontent.com/39946822/58930154-44766f00-8795-11e9-876f-8c20135e13f6.png)
+
+      * 인덱스를 타지 못해 테이블 전체를 검색하여 비효율적으로 검색한다는것을 알 수 있다.
+
+    * 위의 결과가 나오는 이유
+
+      * intj
+        * 원래 정수형이었던 intj를 문자열로 검색했을 시에 데이터 타입 우선순위가 높은 정수형으로 자동 형변환 되기 때문에 아무 문제 없이 인덱스를 따라 검색한다.
+      * str
+        * 원래 문자열인 str를 문자열로 검색했을 시엔 문제가 없지만 정수형으로 검색했을 시에 문제가 발생한다. 정수형이 문자열보다 우선순위가 높기 때문에 문자열로 자동 형변환이 되지 않아 str인덱스를 따라 검색하지 못하고 테이블 전체를 검색하는 매우 비효율적인 검색을 하게된다.
 
 ---
 
 ### 용어 찾아보기
+
+* BNL(Block Nested Loop)	:	[링크](<http://blog.naver.com/PostView.nhn?blogId=parkjy76&logNo=221069454499&categoryNo=14&parentCategoryNo=0&viewDate=¤tPage=1&postListTopCurrentPage=1&from=postView>)
+
+  * MySQL이 BNL을 제공하는 이유는 Nested Loop 조인만 지원하는 한계점을 보완하기 위해서이다.
+  * BNL 방식은 프로세스 내에 별도의 버퍼 (이를 조인 버퍼라고 한다)에 Driving 테이블의 레코드를 저장한 후에 Inner 테이블을 스캔하면서 조인 버퍼를 탐색하는 방식이다.
+  * Nested Loop 방식보다 빠르긴 하지만 Oracle의 Hash join이나 Sort Merge join 보다는 턱없이 느리다...
 
 * 클러스터 인덱스	:	[링크](<https://mongyang.tistory.com/75>)
 
